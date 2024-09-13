@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_flutter/favorites_page.dart';
 import 'package:movie_flutter/movies_controller.dart';
+import 'package:movie_flutter/wathced_page.dart';
 import 'package:provider/provider.dart';
 
 class MoviesListPage extends StatelessWidget {
@@ -26,7 +28,15 @@ class MoviesListPage extends StatelessWidget {
             ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (value) {
-          /// navigate to a new page with a list of only favorite movies
+          if (value == 1) {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const FavoritesPage(),
+            ));
+          } else if (value == 2) {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const WatchedPage(),
+            ));
+          }
         },
         items: const [
           BottomNavigationBarItem(
@@ -36,6 +46,10 @@ class MoviesListPage extends StatelessWidget {
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite),
             label: "Favorites",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.visibility),
+            label: "Watched",
           ),
         ],
       ),
@@ -68,6 +82,15 @@ class MovieWidget extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           Expanded(child: Text(movie.title)),
+          IconButton(
+            onPressed: () {
+              context.read<MoviesController>().toggleWatched(movie);
+            },
+            icon: Icon(
+              movie.isWatched ? Icons.visibility : Icons.visibility_off,
+              color: movie.isWatched ? Colors.green : null,
+            ),
+          ),
           IconButton(
             onPressed: () {
               context.read<MoviesController>().toggleFavorite(movie);
