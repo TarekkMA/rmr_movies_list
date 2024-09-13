@@ -1,39 +1,73 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_flutter/favorites_page.dart';
+import 'package:movie_flutter/movie_details_page.dart';
 import 'package:movie_flutter/movies_controller.dart';
 import 'package:movie_flutter/movies_list_widget.dart';
 import 'package:movie_flutter/wathced_page.dart';
 import 'package:provider/provider.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int currentPage = 0;
+  final pageController = PageController();
+
+  @override
+  void initState() {
+    super.initState();
+    pageController.addListener(() {
+      setState(() {
+        currentPage = pageController.page?.round() ?? 0;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final controller = context.watch<MoviesController>();
 
+    final Widget body;
+    if (controller.isLoading) {
+      body = const Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      body = PageView(
+        controller: pageController,
+        children: [
+          MoviesListWidget(movies: controller.movies),
+          MoviesListWidget(movies: controller.favorites),
+          MoviesListWidget(movies: controller.watched),
+        ],
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Movies List'),
       ),
-      body: controller.isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : MoviesListWidget(movies: controller.movies),
+      body: body,
       bottomNavigationBar: BottomNavigationBar(
         onTap: (value) {
-          if (value == 1) {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const FavoritesPage(),
-            ));
-          } else if (value == 2) {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const WatchedPage(),
-            ));
-          }
+          pageController.animateToPage(
+            value,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.ease,
+          );
         },
+        currentIndex: currentPage,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -59,44 +93,53 @@ class MovieWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8),
-      child: Row(
-        children: [
-          CachedNetworkImage(
-            imageUrl: movie.imageUrl,
-            width: 100,
-            height: 150,
-            errorWidget: (context, error, stackTrace) {
-              return Container(
-                width: 100,
-                height: 150,
-                color: Colors.grey,
-                child: const Icon(Icons.error, color: Colors.white),
-              );
-            },
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => MovieDetailsPage(movieId: movie.id),
           ),
-          const SizedBox(width: 10),
-          Expanded(child: Text(movie.title)),
-          IconButton(
-            onPressed: () {
-              context.read<MoviesController>().toggleWatched(movie);
-            },
-            icon: Icon(
-              movie.isWatched ? Icons.visibility : Icons.visibility_off,
-              color: movie.isWatched ? Colors.green : null,
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Row(
+          children: [
+            CachedNetworkImage(
+              imageUrl: movie.imageUrl,
+              width: 100,
+              height: 150,
+              errorWidget: (context, error, stackTrace) {
+                return Container(
+                  width: 100,
+                  height: 150,
+                  color: Colors.grey,
+                  child: const Icon(Icons.error, color: Colors.white),
+                );
+              },
             ),
-          ),
-          IconButton(
-            onPressed: () {
-              context.read<MoviesController>().toggleFavorite(movie);
-            },
-            icon: Icon(
-              movie.isFavorite ? Icons.favorite : Icons.favorite_border,
-              color: movie.isFavorite ? Colors.red : null,
+            const SizedBox(width: 10),
+            Expanded(child: Text(movie.title)),
+            IconButton(
+              onPressed: () {
+                context.read<MoviesController>().toggleWatched(movie.id);
+              },
+              icon: Icon(
+                movie.isWatched ? Icons.visibility : Icons.visibility_off,
+                color: movie.isWatched ? Colors.green : null,
+              ),
             ),
-          ),
-        ],
+            IconButton(
+              onPressed: () {
+                context.read<MoviesController>().toggleFavorite(movie.id);
+              },
+              icon: Icon(
+                movie.isFavorite ? Icons.favorite : Icons.favorite_border,
+                color: movie.isFavorite ? Colors.red : null,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

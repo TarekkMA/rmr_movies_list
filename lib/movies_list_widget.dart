@@ -13,6 +13,11 @@ class MoviesListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (movies.isEmpty) {
+      return const Center(
+        child: Text('No movies found'),
+      );
+    }
     return ListView.builder(
       itemCount: movies.length,
       itemBuilder: (context, index) {
