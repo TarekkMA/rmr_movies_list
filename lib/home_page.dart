@@ -47,7 +47,25 @@ class _HomePageState extends State<HomePage> {
       body = PageView(
         controller: pageController,
         children: [
-          MoviesListWidget(movies: controller.movies),
+          Column(
+            children: [
+              TextField(
+                decoration: const InputDecoration(
+                  labelText: 'Search',
+                  prefixIcon: Icon(Icons.search),
+                ),
+                onChanged: (value) {
+                  controller.changeQuery(value);
+                },
+              ),
+              Expanded(
+                child: MoviesListWidget(
+                    movies: controller.hasQuery
+                        ? controller.filteredMovies
+                        : controller.movies),
+              ),
+            ],
+          ),
           MoviesListWidget(movies: controller.favorites),
           MoviesListWidget(movies: controller.watched),
         ],

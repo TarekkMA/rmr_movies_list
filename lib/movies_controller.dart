@@ -5,8 +5,15 @@ import 'package:flutter/material.dart';
 class MoviesController extends ChangeNotifier {
   final _dio = Dio();
 
+  String _query = "";
   List<Movie> _movies = [];
+
+  bool get hasQuery => _query.trim().isNotEmpty;
+
   IList<Movie> get movies => _movies.lock;
+  IList<Movie> get filteredMovies => _movies
+      .where((m) => m.title.toLowerCase().contains(_query.toLowerCase()))
+      .toIList();
   IList<Movie> get favorites => _movies.where((m) => m.isFavorite).toIList();
   IList<Movie> get watched => _movies.where((m) => m.isWatched).toIList();
 
@@ -16,7 +23,7 @@ class MoviesController extends ChangeNotifier {
   void fetchMovies() async {
     _isLoading = true;
     notifyListeners();
-    final res = await _dio.get("https://yts.mx/api/v2/list_movies.json");
+    final res = await _dio.get("https://yts.mx/api/v2/list_movies.json?limit=50");
     _isLoading = false;
     _movies = (res.data["data"]["movies"] as Iterable<dynamic>)
         .map((i) => Movie(
@@ -50,6 +57,11 @@ class MoviesController extends ChangeNotifier {
 
   Movie? getMovieById(int movieId) {
     return _movies.where((m) => m.id == movieId).firstOrNull;
+  }
+
+  void changeQuery(String value) {
+    _query = value.trim();
+    notifyListeners();
   }
 }
 
