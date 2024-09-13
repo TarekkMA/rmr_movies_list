@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
+import 'package:state_notifier/state_notifier.dart';
 
 class MoviesState {
   MoviesState({
@@ -49,13 +50,13 @@ class MoviesState {
       o.movies == movies;
 }
 
-class MoviesController extends ValueNotifier<MoviesState> {
+class MoviesController extends StateNotifier<MoviesState> {
   MoviesController() : super(MoviesState.initial());
 
   final _dio = Dio();
 
   void fetchMovies() async {
-    value = value.copyWith(isLoading: true);
+    state = state.copyWith(isLoading: true);
     final res =
         await _dio.get("https://yts.mx/api/v2/list_movies.json?limit=50");
 
@@ -73,31 +74,31 @@ class MoviesController extends ValueNotifier<MoviesState> {
             ))
         .toIList();
 
-    value = value.copyWith(movies: movies, isLoading: false);
+    state = state.copyWith(movies: movies, isLoading: false);
   }
 
   void toggleFavorite(int movieId) {
-    final index = value.movies.indexWhere((m) => m.id == movieId);
-    final movie = value.movies[index];
+    final index = state.movies.indexWhere((m) => m.id == movieId);
+    final movie = state.movies[index];
     final newMovie = movie.copyWith(isFavorite: !movie.isFavorite);
-    final newList = value.movies.replace(index, newMovie);
-    value = value.copyWith(movies: newList);
+    final newList = state.movies.replace(index, newMovie);
+    state = state.copyWith(movies: newList);
   }
 
   void toggleWatched(int movieId) {
-    final index = value.movies.indexWhere((m) => m.id == movieId);
-    final movie = value.movies[index];
+    final index = state.movies.indexWhere((m) => m.id == movieId);
+    final movie = state.movies[index];
     final newMovie = movie.copyWith(isWatched: !movie.isWatched);
-    final newList = value.movies.replace(index, newMovie);
-    value = value.copyWith(movies: newList);
+    final newList = state.movies.replace(index, newMovie);
+    state = state.copyWith(movies: newList);
   }
 
   Movie? getMovieById(int movieId) {
-    return value.movies.where((m) => m.id == movieId).firstOrNull;
+    return state.movies.where((m) => m.id == movieId).firstOrNull;
   }
 
   void changeQuery(String newQuery) {
-    value = value.copyWith(query: newQuery.trim());
+    state = state.copyWith(query: newQuery.trim());
   }
 }
 

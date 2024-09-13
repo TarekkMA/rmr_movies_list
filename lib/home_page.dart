@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<MoviesController>().value;
+    final state = context.watch<MoviesState>();
 
     final Widget body;
     if (state.isLoading) {
