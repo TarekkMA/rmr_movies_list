@@ -2,11 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_flutter/favorites_page.dart';
 import 'package:movie_flutter/movies_controller.dart';
+import 'package:movie_flutter/movies_list_widget.dart';
 import 'package:movie_flutter/wathced_page.dart';
 import 'package:provider/provider.dart';
 
-class MoviesListPage extends StatelessWidget {
-  const MoviesListPage({super.key});
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +21,7 @@ class MoviesListPage extends StatelessWidget {
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : ListView.builder(
-              itemCount: controller.movies.length,
-              itemBuilder: (context, index) {
-                return MovieWidget(movie: controller.movies[index]);
-              },
-            ),
+          : MoviesListWidget(movies: controller.movies),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (value) {
           if (value == 1) {

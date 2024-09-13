@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_flutter/movies_controller.dart';
-import 'package:movie_flutter/movies_list_page.dart';
+import 'package:movie_flutter/home_page.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -15,7 +15,7 @@ class MainApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => MoviesController()..fetchMovies(),
       child: const MaterialApp(
-        home: MoviesListPage(),
+        home: HomePage(),
       ),
     );
   }
