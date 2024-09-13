@@ -1,10 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:movie_flutter/favorites_page.dart';
 import 'package:movie_flutter/movie_details_page.dart';
 import 'package:movie_flutter/movies_controller.dart';
 import 'package:movie_flutter/movies_list_widget.dart';
-import 'package:movie_flutter/wathced_page.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -36,10 +34,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.watch<MoviesController>();
+    final state = context.watch<MoviesController>().value;
 
     final Widget body;
-    if (controller.isLoading) {
+    if (state.isLoading) {
       body = const Center(
         child: CircularProgressIndicator(),
       );
@@ -55,19 +53,19 @@ class _HomePageState extends State<HomePage> {
                   prefixIcon: Icon(Icons.search),
                 ),
                 onChanged: (value) {
-                  controller.changeQuery(value);
+                  context.read<MoviesController>().changeQuery(value);
                 },
               ),
               Expanded(
                 child: MoviesListWidget(
-                    movies: controller.hasQuery
-                        ? controller.filteredMovies
-                        : controller.movies),
+                    movies: state.hasQuery
+                        ? state.filteredMovies
+                        : state.movies),
               ),
             ],
           ),
-          MoviesListWidget(movies: controller.favorites),
-          MoviesListWidget(movies: controller.watched),
+          MoviesListWidget(movies: state.favorites),
+          MoviesListWidget(movies: state.watched),
         ],
       );
     }

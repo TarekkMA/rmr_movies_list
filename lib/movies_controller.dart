@@ -2,30 +2,64 @@ import 'package:dio/dio.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 
-class MoviesController extends ChangeNotifier {
+class MoviesState {
+  MoviesState({
+    required this.query,
+    required this.isLoading,
+    required this.movies,
+  });
+
+  factory MoviesState.initial() => MoviesState(
+        query: "",
+        isLoading: true,
+        movies: IList<Movie>(),
+      );
+
+  final String query;
+  final bool isLoading;
+  final IList<Movie> movies;
+
+  bool get hasQuery => query.trim().isNotEmpty;
+  IList<Movie> get filteredMovies => movies
+      .where((m) => m.title.toLowerCase().contains(query.toLowerCase()))
+      .toIList();
+  IList<Movie> get favorites => movies.where((m) => m.isFavorite).toIList();
+  IList<Movie> get watched => movies.where((m) => m.isWatched).toIList();
+
+  MoviesState copyWith({
+    String? query,
+    bool? isLoading,
+    IList<Movie>? movies,
+  }) =>
+      MoviesState(
+        query: query ?? this.query,
+        isLoading: isLoading ?? this.isLoading,
+        movies: movies ?? this.movies,
+      );
+
+  @override
+  String toString() =>
+      "MoviesState(query: $query, isLoading: $isLoading, movies: $movies)";
+
+  @override
+  operator ==(o) =>
+      o is MoviesState &&
+      o.query == query &&
+      o.isLoading == isLoading &&
+      o.movies == movies;
+}
+
+class MoviesController extends ValueNotifier<MoviesState> {
+  MoviesController() : super(MoviesState.initial());
+
   final _dio = Dio();
 
-  String _query = "";
-  List<Movie> _movies = [];
-
-  bool get hasQuery => _query.trim().isNotEmpty;
-
-  IList<Movie> get movies => _movies.lock;
-  IList<Movie> get filteredMovies => _movies
-      .where((m) => m.title.toLowerCase().contains(_query.toLowerCase()))
-      .toIList();
-  IList<Movie> get favorites => _movies.where((m) => m.isFavorite).toIList();
-  IList<Movie> get watched => _movies.where((m) => m.isWatched).toIList();
-
-  bool _isLoading = false;
-  bool get isLoading => _isLoading;
-
   void fetchMovies() async {
-    _isLoading = true;
-    notifyListeners();
-    final res = await _dio.get("https://yts.mx/api/v2/list_movies.json?limit=50");
-    _isLoading = false;
-    _movies = (res.data["data"]["movies"] as Iterable<dynamic>)
+    value = value.copyWith(isLoading: true);
+    final res =
+        await _dio.get("https://yts.mx/api/v2/list_movies.json?limit=50");
+
+    final movies = (res.data["data"]["movies"] as Iterable<dynamic>)
         .map((i) => Movie(
               id: i["id"],
               title: i["title"],
@@ -37,31 +71,33 @@ class MoviesController extends ChangeNotifier {
               isFavorite: false,
               isWatched: false,
             ))
-        .toList();
-    notifyListeners();
+        .toIList();
+
+    value = value.copyWith(movies: movies, isLoading: false);
   }
 
   void toggleFavorite(int movieId) {
-    final index = _movies.indexWhere((m) => m.id == movieId);
-    final movie = _movies[index];
-    _movies[index] = movie.copyWith(isFavorite: !movie.isFavorite);
-    notifyListeners();
+    final index = value.movies.indexWhere((m) => m.id == movieId);
+    final movie = value.movies[index];
+    final newMovie = movie.copyWith(isFavorite: !movie.isFavorite);
+    final newList = value.movies.replace(index, newMovie);
+    value = value.copyWith(movies: newList);
   }
 
   void toggleWatched(int movieId) {
-    final index = _movies.indexWhere((m) => m.id == movieId);
-    final movie = _movies[index];
-    _movies[index] = movie.copyWith(isWatched: !movie.isWatched);
-    notifyListeners();
+    final index = value.movies.indexWhere((m) => m.id == movieId);
+    final movie = value.movies[index];
+    final newMovie = movie.copyWith(isWatched: !movie.isWatched);
+    final newList = value.movies.replace(index, newMovie);
+    value = value.copyWith(movies: newList);
   }
 
   Movie? getMovieById(int movieId) {
-    return _movies.where((m) => m.id == movieId).firstOrNull;
+    return value.movies.where((m) => m.id == movieId).firstOrNull;
   }
 
-  void changeQuery(String value) {
-    _query = value.trim();
-    notifyListeners();
+  void changeQuery(String newQuery) {
+    value = value.copyWith(query: newQuery.trim());
   }
 }
 
