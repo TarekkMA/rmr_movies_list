@@ -55,9 +55,11 @@ class Movie {
         isFavorite: isFavorite ?? this.isFavorite,
       );
 
+  @override
   String toString() =>
       "Movie(title: $title, imageUrl: $imageUrl, isFavorite: $isFavorite)";
 
+  @override
   operator ==(o) =>
       o is Movie &&
       o.title == title &&

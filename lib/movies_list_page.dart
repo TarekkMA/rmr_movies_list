@@ -66,7 +66,7 @@ class MovieWidget extends StatelessWidget {
               );
             },
           ),
-          SizedBox(width: 10),
+          const SizedBox(width: 10),
           Expanded(child: Text(movie.title)),
           IconButton(
             onPressed: () {
