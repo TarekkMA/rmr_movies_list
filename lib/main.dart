@@ -18,12 +18,12 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return InheritedProvider(
       create: (context) => MoviesRepo(),
-      child: BlocProvider<MoviesCubit>(
-        create: (context) => MoviesCubit(
-          context.read<MoviesRepo>(),
-        )..fetchMovies(),
-        child: const MaterialApp(
-          home: HomePage(),
+      child: MaterialApp(
+        home: BlocProvider(
+          create: (context) => MoviesCubit(
+            context.read<MoviesRepo>(),
+          )..fetchMovies(),
+          child: const HomePage(),
         ),
       ),
     );
