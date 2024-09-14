@@ -1,3 +1,4 @@
+import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
@@ -62,13 +63,13 @@ class MoviesState {
       query.hashCode ^ isLoading.hashCode ^ movies.hashCode ^ error.hashCode;
 }
 
-class MoviesController extends StateNotifier<MoviesState> {
-  MoviesController() : super(MoviesState.initial());
+class MoviesCubit extends Cubit<MoviesState> {
+  MoviesCubit() : super(MoviesState.initial());
 
   final _dio = Dio();
 
   Future<void> fetchMovies() async {
-    state = state.copyWith(isLoading: true);
+    emit(state.copyWith(isLoading: true));
 
     try {
       final res =
@@ -88,16 +89,16 @@ class MoviesController extends StateNotifier<MoviesState> {
               ))
           .toIList();
 
-      state = state.copyWith(movies: movies, isLoading: false);
+      emit(state.copyWith(movies: movies, isLoading: false));
     } catch (e, stackTrace) {
       debugPrintStack(
         label: e.toString(),
         stackTrace: stackTrace,
       );
-      state = state.copyWith(
+      emit(state.copyWith(
         isLoading: false,
         error: "Error fetching movies",
-      );
+      ));
     }
   }
 
@@ -106,7 +107,7 @@ class MoviesController extends StateNotifier<MoviesState> {
     final movie = state.movies[index];
     final newMovie = movie.copyWith(isFavorite: !movie.isFavorite);
     final newList = state.movies.replace(index, newMovie);
-    state = state.copyWith(movies: newList);
+    emit(state.copyWith(movies: newList));
   }
 
   void toggleWatched(int movieId) {
@@ -114,7 +115,7 @@ class MoviesController extends StateNotifier<MoviesState> {
     final movie = state.movies[index];
     final newMovie = movie.copyWith(isWatched: !movie.isWatched);
     final newList = state.movies.replace(index, newMovie);
-    state = state.copyWith(movies: newList);
+    emit(state.copyWith(movies: newList));
   }
 
   Movie? getMovieById(int movieId) {
@@ -122,7 +123,7 @@ class MoviesController extends StateNotifier<MoviesState> {
   }
 
   void changeQuery(String newQuery) {
-    state = state.copyWith(query: newQuery.trim());
+    emit(state.copyWith(query: newQuery.trim()));
   }
 }
 

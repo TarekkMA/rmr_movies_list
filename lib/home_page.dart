@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_flutter/movie_details_page.dart';
-import 'package:movie_flutter/movies_controller.dart';
+import 'package:movie_flutter/movies_cubit.dart';
 import 'package:movie_flutter/movies_list_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<MoviesState>();
+    final state = context.watch<MoviesCubit>().state;
 
     final Widget body;
     if (state.isLoading) {
@@ -57,13 +57,13 @@ class _HomePageState extends State<HomePage> {
                   prefixIcon: Icon(Icons.search),
                 ),
                 onChanged: (value) {
-                  context.read<MoviesController>().changeQuery(value);
+                  context.read<MoviesCubit>().changeQuery(value);
                 },
               ),
               Expanded(
                 child: RefreshIndicator(
                   onRefresh: () async {
-                    context.read<MoviesController>().fetchMovies();
+                    context.read<MoviesCubit>().fetchMovies();
                   },
                   child: MoviesListWidget(
                     movies:
@@ -150,7 +150,7 @@ class MovieWidget extends StatelessWidget {
             Expanded(child: Text(movie.title)),
             IconButton(
               onPressed: () {
-                context.read<MoviesController>().toggleWatched(movie.id);
+                context.read<MoviesCubit>().toggleWatched(movie.id);
               },
               icon: Icon(
                 movie.isWatched ? Icons.visibility : Icons.visibility_off,
@@ -159,7 +159,7 @@ class MovieWidget extends StatelessWidget {
             ),
             IconButton(
               onPressed: () {
-                context.read<MoviesController>().toggleFavorite(movie.id);
+                context.read<MoviesCubit>().toggleFavorite(movie.id);
               },
               icon: Icon(
                 movie.isFavorite ? Icons.favorite : Icons.favorite_border,

@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:movie_flutter/movies_controller.dart';
+import 'package:movie_flutter/movies_cubit.dart';
 import 'package:provider/provider.dart';
 
 class MovieDetailsPage extends StatelessWidget {
@@ -9,7 +9,7 @@ class MovieDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final movie = context.watch<MoviesController>().getMovieById(movieId);
+    final movie = context.watch<MoviesCubit>().getMovieById(movieId);
 
     final Widget body;
     if (movie == null) {
@@ -104,7 +104,7 @@ class _MovieDetailsPageContent extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () {
-                    context.read<MoviesController>().toggleWatched(movie.id);
+                    context.read<MoviesCubit>().toggleWatched(movie.id);
                   },
                   icon: Icon(
                     movie.isWatched ? Icons.visibility : Icons.visibility_off,
@@ -113,7 +113,7 @@ class _MovieDetailsPageContent extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: () {
-                    context.read<MoviesController>().toggleFavorite(movie.id);
+                    context.read<MoviesCubit>().toggleFavorite(movie.id);
                   },
                   icon: Icon(
                     movie.isFavorite ? Icons.favorite : Icons.favorite_border,
