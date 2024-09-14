@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_flutter/movie.dart';
 import 'package:movie_flutter/movies_cubit.dart';
 
-class MoviesRepo {
+class MoviesRepo extends ChangeNotifier {
   MoviesRepo();
 
   final _dio = Dio();
@@ -12,8 +12,6 @@ class MoviesRepo {
   List<Movie> _movies = [];
   Set<int> _favoriteMovies = {};
   Set<int> _watchedMovies = {};
-
-  final favoritesOrWatchedNotifier = ChangeNotifier();
 
   IList<Movie> get movies => _movies.lock;
 
@@ -54,7 +52,7 @@ class MoviesRepo {
     } else {
       _favoriteMovies.add(movieId);
     }
-    favoritesOrWatchedNotifier.notifyListeners();
+    notifyListeners();
   }
 
   void toggleWatched(int movieId) {
@@ -63,7 +61,7 @@ class MoviesRepo {
     } else {
       _watchedMovies.add(movieId);
     }
-    favoritesOrWatchedNotifier.notifyListeners();
+    notifyListeners();
   }
 
   bool isFavorite(int movieId) => _favoriteMovies.contains(movieId);

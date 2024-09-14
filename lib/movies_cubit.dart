@@ -82,13 +82,16 @@ class MoviesState {
 
 class MoviesCubit extends Cubit<MoviesState> {
   final MoviesRepo _repo;
+
   MoviesCubit(this._repo) : super(MoviesState.initial()) {
-    _repo.favoritesOrWatchedNotifier.addListener(() {
-      emit(state.copyWith(
-        favoriteMovies: _repo.favoriteMovies,
-        watchedMovies: _repo.watchedMovies,
-      ));
-    });
+    _repo.addListener(_repoStateChanged);
+  }
+
+  void _repoStateChanged() {
+    emit(state.copyWith(
+      favoriteMovies: _repo.favoriteMovies,
+      watchedMovies: _repo.watchedMovies,
+    ));
   }
 
   Future<void> fetchMovies() async {
@@ -112,5 +115,11 @@ class MoviesCubit extends Cubit<MoviesState> {
 
   void changeQuery(String newQuery) {
     emit(state.copyWith(query: newQuery.trim()));
+  }
+
+  @override
+  Future<void> close() {
+    _repo.removeListener(_repoStateChanged);
+    return super.close();
   }
 }

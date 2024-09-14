@@ -16,7 +16,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider(
+    return InheritedProvider(
       create: (context) => MoviesRepo(),
       child: BlocProvider<MoviesCubit>(
         create: (context) => MoviesCubit(

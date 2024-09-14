@@ -35,9 +35,21 @@ class MoviesDetailsLoaded extends MoviesDetailsState {
 class MoviesDetailsCubit extends Cubit<MoviesDetailsState> {
   MoviesDetailsCubit(int movieId, this._repo) : super(MoviesDetailsLoading()) {
     fetchMovieDetails(movieId);
+    _repo.addListener(_repoStateChanged);
   }
 
   final MoviesRepo _repo;
+
+  void _repoStateChanged() {
+    if (state is MoviesDetailsLoaded) {
+      emit(
+        (state as MoviesDetailsLoaded).copyWith(
+          isFavorite: _repo.isFavorite((state as MoviesDetailsLoaded).movie.id),
+          isWatched: _repo.isWatched((state as MoviesDetailsLoaded).movie.id),
+        ),
+      );
+    }
+  }
 
   void fetchMovieDetails(int movieId) {
     final movie = _repo.getMovieById(movieId);
@@ -64,5 +76,11 @@ class MoviesDetailsCubit extends Cubit<MoviesDetailsState> {
     _repo.toggleWatched(movieId);
     emit((state as MoviesDetailsLoaded)
         .copyWith(isWatched: _repo.isWatched(movieId)));
+  }
+
+  @override
+  Future<void> close() {
+    _repo.removeListener(_repoStateChanged);
+    return super.close();
   }
 }
