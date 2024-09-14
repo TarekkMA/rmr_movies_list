@@ -3,24 +3,29 @@ import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:state_notifier/state_notifier.dart';
 
+@immutable
 class MoviesState {
-  MoviesState({
+  const MoviesState({
     required this.query,
+    required this.error,
     required this.isLoading,
     required this.movies,
   });
 
   factory MoviesState.initial() => MoviesState(
         query: "",
+        error: null,
         isLoading: true,
         movies: IList<Movie>(),
       );
 
   final String query;
+  final String? error;
   final bool isLoading;
   final IList<Movie> movies;
 
   bool get hasQuery => query.trim().isNotEmpty;
+  bool get hasError => error != null;
   IList<Movie> get filteredMovies => movies
       .where((m) => m.title.toLowerCase().contains(query.toLowerCase()))
       .toIList();
@@ -31,11 +36,13 @@ class MoviesState {
     String? query,
     bool? isLoading,
     IList<Movie>? movies,
+    String? error,
   }) =>
       MoviesState(
         query: query ?? this.query,
         isLoading: isLoading ?? this.isLoading,
         movies: movies ?? this.movies,
+        error: error ?? this.error,
       );
 
   @override
@@ -47,7 +54,12 @@ class MoviesState {
       o is MoviesState &&
       o.query == query &&
       o.isLoading == isLoading &&
+      o.error == error &&
       o.movies == movies;
+
+  @override
+  int get hashCode =>
+      query.hashCode ^ isLoading.hashCode ^ movies.hashCode ^ error.hashCode;
 }
 
 class MoviesController extends StateNotifier<MoviesState> {
@@ -55,26 +67,38 @@ class MoviesController extends StateNotifier<MoviesState> {
 
   final _dio = Dio();
 
-  void fetchMovies() async {
+  Future<void> fetchMovies() async {
     state = state.copyWith(isLoading: true);
-    final res =
-        await _dio.get("https://yts.mx/api/v2/list_movies.json?limit=50");
 
-    final movies = (res.data["data"]["movies"] as Iterable<dynamic>)
-        .map((i) => Movie(
-              id: i["id"],
-              title: i["title"],
-              imageUrl: i["large_cover_image"],
-              backgroundImageUrl: i["background_image"],
-              year: i["year"],
-              rating: i["rating"].toDouble(),
-              runtime: i["runtime"],
-              isFavorite: false,
-              isWatched: false,
-            ))
-        .toIList();
+    try {
+      final res =
+          await _dio.get("https://yts.mx/api/v2/list_movies.json?limit=50");
 
-    state = state.copyWith(movies: movies, isLoading: false);
+      final movies = (res.data["data"]["movies"] as Iterable<dynamic>)
+          .map((i) => Movie(
+                id: i["id"],
+                title: i["title"],
+                imageUrl: i["large_cover_image"],
+                backgroundImageUrl: i["background_image"],
+                year: i["year"],
+                rating: i["rating"].toDouble(),
+                runtime: i["runtime"],
+                isFavorite: false,
+                isWatched: false,
+              ))
+          .toIList();
+
+      state = state.copyWith(movies: movies, isLoading: false);
+    } catch (e, stackTrace) {
+      debugPrintStack(
+        label: e.toString(),
+        stackTrace: stackTrace,
+      );
+      state = state.copyWith(
+        isLoading: false,
+        error: "Error fetching movies",
+      );
+    }
   }
 
   void toggleFavorite(int movieId) {
@@ -102,6 +126,7 @@ class MoviesController extends StateNotifier<MoviesState> {
   }
 }
 
+@immutable
 class Movie {
   final int id;
   final String title;
@@ -114,7 +139,7 @@ class Movie {
   final bool isFavorite;
   final bool isWatched;
 
-  Movie({
+  const Movie({
     required this.id,
     required this.title,
     required this.imageUrl,

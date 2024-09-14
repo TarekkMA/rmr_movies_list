@@ -41,6 +41,10 @@ class _HomePageState extends State<HomePage> {
       body = const Center(
         child: CircularProgressIndicator(),
       );
+    } else if (state.hasError) {
+      body = Center(
+        child: Text(state.error!, style: const TextStyle(color: Colors.red)),
+      );
     } else {
       body = PageView(
         controller: pageController,
@@ -57,10 +61,15 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
               Expanded(
-                child: MoviesListWidget(
-                    movies: state.hasQuery
-                        ? state.filteredMovies
-                        : state.movies),
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    context.read<MoviesController>().fetchMovies();
+                  },
+                  child: MoviesListWidget(
+                    movies:
+                        state.hasQuery ? state.filteredMovies : state.movies,
+                  ),
+                ),
               ),
             ],
           ),
@@ -77,9 +86,12 @@ class _HomePageState extends State<HomePage> {
       body: body,
       bottomNavigationBar: BottomNavigationBar(
         onTap: (value) {
+          if (state.isLoading || state.hasError) {
+            return;
+          }
           pageController.animateToPage(
             value,
-            duration: const Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 500),
             curve: Curves.ease,
           );
         },
