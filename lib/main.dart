@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:movie_flutter/movies_cubit.dart';
 import 'package:movie_flutter/home_page.dart';
+import 'package:movie_flutter/movies_repo.dart';
 import 'package:provider/provider.dart';
 import 'package:state_notifier/state_notifier.dart';
 
@@ -15,10 +16,15 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<MoviesCubit>(
-      create: (context) => MoviesCubit()..fetchMovies(),
-      child: const MaterialApp(
-        home: HomePage(),
+    return Provider(
+      create: (context) => MoviesRepo(),
+      child: BlocProvider<MoviesCubit>(
+        create: (context) => MoviesCubit(
+          context.read<MoviesRepo>(),
+        )..fetchMovies(),
+        child: const MaterialApp(
+          home: HomePage(),
+        ),
       ),
     );
   }
@@ -33,7 +39,7 @@ class StreamsPage extends StatefulWidget {
 
 class _StreamsPageState extends State<StreamsPage> {
   late final Stream<int> stream;
-  List<int> values = []; 
+  List<int> values = [];
 
   Stream<int> getStream() async* {
     for (int i = 0; i < 10; i++) {
@@ -66,7 +72,7 @@ class _StreamsPageState extends State<StreamsPage> {
           values.add(snapshot.data as int);
 
           return Center(
-            child: Text('Values: ${values.join(', ')}'),  
+            child: Text('Values: ${values.join(', ')}'),
           );
         },
       ),

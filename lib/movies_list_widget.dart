@@ -1,6 +1,7 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_flutter/home_page.dart';
+import 'package:movie_flutter/movie.dart';
 import 'package:movie_flutter/movies_cubit.dart';
 
 class MoviesListWidget extends StatelessWidget {

@@ -1,8 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_flutter/movie.dart';
 import 'package:movie_flutter/movie_details_page.dart';
 import 'package:movie_flutter/movies_cubit.dart';
+import 'package:movie_flutter/movies_details_cubit.dart';
 import 'package:movie_flutter/movies_list_widget.dart';
+import 'package:movie_flutter/movies_repo.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -73,8 +77,8 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
-          MoviesListWidget(movies: state.favorites),
-          MoviesListWidget(movies: state.watched),
+          MoviesListWidget(movies: state.favoriteMovies),
+          MoviesListWidget(movies: state.watchedMovies),
         ],
       );
     }
@@ -148,22 +152,51 @@ class MovieWidget extends StatelessWidget {
             ),
             const SizedBox(width: 10),
             Expanded(child: Text(movie.title)),
-            IconButton(
-              onPressed: () {
-                context.read<MoviesCubit>().toggleWatched(movie.id);
-              },
-              icon: Icon(
-                movie.isWatched ? Icons.visibility : Icons.visibility_off,
-                color: movie.isWatched ? Colors.green : null,
+            BlocProvider(
+              create: (context) => MoviesDetailsCubit(
+                movie.id,
+                context.read<MoviesRepo>(),
               ),
-            ),
-            IconButton(
-              onPressed: () {
-                context.read<MoviesCubit>().toggleFavorite(movie.id);
-              },
-              icon: Icon(
-                movie.isFavorite ? Icons.favorite : Icons.favorite_border,
-                color: movie.isFavorite ? Colors.red : null,
+              child: BlocBuilder<MoviesDetailsCubit, MoviesDetailsState>(
+                builder: (context, state) {
+                  switch (state) {
+                    case MoviesDetailsLoading():
+                      return const CircularProgressIndicator();
+                    case MoviesDetailsError():
+                      return const Icon(Icons.error, color: Colors.red);
+                    case MoviesDetailsLoaded():
+                      return Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              context
+                                  .read<MoviesDetailsCubit>()
+                                  .toggleWatched(movie.id);
+                            },
+                            icon: Icon(
+                              state.isWatched
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: state.isWatched ? Colors.green : null,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              context
+                                  .read<MoviesDetailsCubit>()
+                                  .toggleFavorite(movie.id);
+                            },
+                            icon: Icon(
+                              state.isFavorite
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color: state.isFavorite ? Colors.red : null,
+                            ),
+                          ),
+                        ],
+                      );
+                  }
+                },
               ),
             ),
           ],

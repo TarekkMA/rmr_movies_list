@@ -1,6 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_flutter/movie.dart';
 import 'package:movie_flutter/movies_cubit.dart';
+import 'package:movie_flutter/movies_details_cubit.dart';
+import 'package:movie_flutter/movies_repo.dart';
 import 'package:provider/provider.dart';
 
 class MovieDetailsPage extends StatelessWidget {
@@ -9,37 +13,50 @@ class MovieDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final movie = context.watch<MoviesCubit>().getMovieById(movieId);
-
-    final Widget body;
-    if (movie == null) {
-      body = Center(
-        child: Text('Movie with id $movieId is not found'),
-      );
-    } else {
-      body = _MovieDetailsPageContent(movie: movie);
-    }
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Movie Details'),
-        backgroundColor: Colors.transparent,
-        iconTheme: const IconThemeData(color: Colors.white),
-        titleTextStyle: const TextStyle(
-            color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+    return BlocProvider(
+      create: (context) => MoviesDetailsCubit(
+        movieId,
+        context.read<MoviesRepo>(),
       ),
-      extendBodyBehindAppBar: true,
-      body: body,
+      child: BlocBuilder<MoviesDetailsCubit, MoviesDetailsState>(
+        builder: (context, state) {
+          final Widget body;
+          switch (state) {
+            case MoviesDetailsLoading():
+              body = const Center(child: CircularProgressIndicator());
+            case MoviesDetailsError():
+              body = const Center(child: Icon(Icons.error, color: Colors.red));
+            case MoviesDetailsLoaded():
+              body = _MovieDetailsPageContent(moviesDetailsState: state);
+          }
+
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Movie Details'),
+              backgroundColor: Colors.transparent,
+              iconTheme: const IconThemeData(color: Colors.white),
+              titleTextStyle: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+            ),
+            extendBodyBehindAppBar: true,
+            body: body,
+          );
+        },
+      ),
     );
   }
 }
 
 class _MovieDetailsPageContent extends StatelessWidget {
-  final Movie movie;
+  final MoviesDetailsLoaded moviesDetailsState;
   const _MovieDetailsPageContent({
     super.key,
-    required this.movie,
+    required this.moviesDetailsState,
   });
+
+  Movie get movie => moviesDetailsState.movie;
 
   @override
   Widget build(BuildContext context) {
@@ -104,24 +121,28 @@ class _MovieDetailsPageContent extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () {
-                    context.read<MoviesCubit>().toggleWatched(movie.id);
+                    context.read<MoviesDetailsCubit>().toggleWatched(movie.id);
                   },
                   icon: Icon(
-                    movie.isWatched ? Icons.visibility : Icons.visibility_off,
-                    color: movie.isWatched ? Colors.green : Colors.white,
+                    moviesDetailsState.isWatched
+                        ? Icons.visibility
+                        : Icons.visibility_off,
+                    color: moviesDetailsState.isWatched ? Colors.green : null,
                   ),
                 ),
                 IconButton(
                   onPressed: () {
-                    context.read<MoviesCubit>().toggleFavorite(movie.id);
+                    context.read<MoviesDetailsCubit>().toggleFavorite(movie.id);
                   },
                   icon: Icon(
-                    movie.isFavorite ? Icons.favorite : Icons.favorite_border,
-                    color: movie.isFavorite ? Colors.red : Colors.white,
+                    moviesDetailsState.isFavorite
+                        ? Icons.favorite
+                        : Icons.favorite_border,
+                    color: moviesDetailsState.isFavorite ? Colors.red : null,
                   ),
                 ),
               ],
-            ),
+            )
           ],
         ),
       ],
