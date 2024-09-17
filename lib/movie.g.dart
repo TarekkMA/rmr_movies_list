@@ -6,7 +6,7 @@ part of 'movie.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Movie _$MovieFromJson(Map<String, dynamic> json) => Movie(
+_$MovieImpl _$$MovieImplFromJson(Map<String, dynamic> json) => _$MovieImpl(
       id: (json['id'] as num).toInt(),
       title: json['title'] as String,
       imageUrl: json['large_cover_image'] as String,
@@ -15,3 +15,14 @@ Movie _$MovieFromJson(Map<String, dynamic> json) => Movie(
       rating: (json['rating'] as num).toDouble(),
       runtime: (json['runtime'] as num).toInt(),
     );
+
+Map<String, dynamic> _$$MovieImplToJson(_$MovieImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'title': instance.title,
+      'large_cover_image': instance.imageUrl,
+      'background_image': instance.backgroundImageUrl,
+      'year': instance.year,
+      'rating': instance.rating,
+      'runtime': instance.runtime,
+    };

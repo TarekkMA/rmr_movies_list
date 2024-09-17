@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
+import 'package:movie_flutter/movie.dart';
 import 'package:movie_flutter/movies_cubit.dart';
 import 'package:movie_flutter/home_page.dart';
 import 'package:movie_flutter/movies_repo.dart';
@@ -8,6 +9,19 @@ import 'package:provider/provider.dart';
 import 'package:state_notifier/state_notifier.dart';
 
 void main() {
+  const movie = Movie(
+    id: 1,
+    title: "The Shawshank Redemption",
+    imageUrl:
+        "https://yts.mx/assets/images/movies/the_shawshank_redemption_1994/large-cover.jpg",
+    backgroundImageUrl:
+        "https://yts.mx/assets/images/movies/the_shawshank_redemption_1994/background.jpg",
+    year: 1994,
+    rating: 9.3,
+    runtime: 142,
+  );
+
+
   runApp(const MainApp());
 }
 

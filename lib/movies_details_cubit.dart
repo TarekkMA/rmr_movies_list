@@ -1,41 +1,26 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:movie_flutter/movie.dart';
 import 'package:movie_flutter/movies_cubit.dart';
 import 'package:movie_flutter/movies_repo.dart';
 
-@immutable
-sealed class MoviesDetailsState {}
+part 'movies_details_cubit.freezed.dart';
 
-class MoviesDetailsLoading extends MoviesDetailsState {}
-
-class MoviesDetailsError extends MoviesDetailsState {
-  final String message;
-
-  MoviesDetailsError(this.message);
+@freezed
+sealed class MoviesDetailsState with _$MoviesDetailsState {
+  const factory MoviesDetailsState.loading() = MoviesDetailsLoading;
+  const factory MoviesDetailsState.error(String message) = MoviesDetailsError;
+  const factory MoviesDetailsState.loaded(
+    Movie movie,
+    bool isFavorite,
+    bool isWatched,
+  ) = MoviesDetailsLoaded;
 }
 
-class MoviesDetailsLoaded extends MoviesDetailsState {
-  final Movie movie;
-  final bool isFavorite;
-  final bool isWatched;
-
-  MoviesDetailsLoaded(this.movie, this.isFavorite, this.isWatched);
-
-  MoviesDetailsLoaded copyWith({
-    Movie? movie,
-    bool? isFavorite,
-    bool? isWatched,
-  }) =>
-      MoviesDetailsLoaded(
-        movie ?? this.movie,
-        isFavorite ?? this.isFavorite,
-        isWatched ?? this.isWatched,
-      );
-}
 
 class MoviesDetailsCubit extends Cubit<MoviesDetailsState> {
-  MoviesDetailsCubit(int movieId, this._repo) : super(MoviesDetailsLoading()) {
+  MoviesDetailsCubit(int movieId, this._repo) : super(const MoviesDetailsState.loading()) {
     fetchMovieDetails(movieId);
     _repo.addListener(_repoStateChanged);
   }
@@ -56,14 +41,14 @@ class MoviesDetailsCubit extends Cubit<MoviesDetailsState> {
   void fetchMovieDetails(int movieId) {
     final movie = _repo.getMovieById(movieId);
     if (movie == null) {
-      emit(MoviesDetailsError("Movie not found"));
+      emit(const MoviesDetailsState.error("Movie not found"));
       return;
     }
 
     final isFavorite = _repo.isFavorite(movieId);
     final isWatched = _repo.isWatched(movieId);
 
-    emit(MoviesDetailsLoaded(movie, isFavorite, isWatched));
+    emit(MoviesDetailsState.loaded(movie, isFavorite, isWatched));
   }
 
   void toggleFavorite(int movieId) {

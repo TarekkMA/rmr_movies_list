@@ -1,78 +1,24 @@
 import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+part 'movie.freezed.dart';
 part 'movie.g.dart';
 
-@immutable
-@JsonSerializable(
-  createToJson: false,
-)
-class Movie {
-  final int id;
-  final String title;
-  @JsonKey(name: "large_cover_image")
-  final String imageUrl;
-  @JsonKey(name: "background_image")
-  final String backgroundImageUrl;
-  final int year;
-  final double rating;
-  final int runtime;
-
-  const Movie({
-    required this.id,
-    required this.title,
-    required this.imageUrl,
-    required this.backgroundImageUrl,
-    required this.year,
-    required this.rating,
-    required this.runtime,
-  });
+@freezed
+class Movie with _$Movie {
+  const factory Movie({
+    required int id,
+    required String title,
+    @JsonKey(name: "large_cover_image") required String imageUrl,
+    @JsonKey(name: "background_image") required String backgroundImageUrl,
+    required int year,
+    required double rating,
+    required int runtime,
+  }) = _Movie;
 
   factory Movie.fromJson(Map<String, dynamic> json) => _$MovieFromJson(json);
 
   static List<Movie> fromJsonList(Iterable<dynamic> jsonList) =>
       jsonList.map((json) => Movie.fromJson(json)).toList();
-
-  Movie copyWith({
-    int? id,
-    String? title,
-    String? imageUrl,
-    String? backgroundImageUrl,
-    int? year,
-    double? rating,
-    int? runtime,
-  }) =>
-      Movie(
-        id: id ?? this.id,
-        title: title ?? this.title,
-        imageUrl: imageUrl ?? this.imageUrl,
-        backgroundImageUrl: backgroundImageUrl ?? this.backgroundImageUrl,
-        year: year ?? this.year,
-        rating: rating ?? this.rating,
-        runtime: runtime ?? this.runtime,
-      );
-
-  @override
-  String toString() => "Movie(id: $id, title: $title, imageUrl: $imageUrl)";
-
-  @override
-  operator ==(o) =>
-      o is Movie &&
-      o.id == id &&
-      o.title == title &&
-      o.imageUrl == imageUrl &&
-      o.backgroundImageUrl == backgroundImageUrl &&
-      o.year == year &&
-      o.rating == rating &&
-      o.runtime == runtime;
-
-  @override
-  int get hashCode =>
-      id.hashCode ^
-      title.hashCode ^
-      imageUrl.hashCode ^
-      backgroundImageUrl.hashCode ^
-      year.hashCode ^
-      rating.hashCode ^
-      runtime.hashCode;
 }
