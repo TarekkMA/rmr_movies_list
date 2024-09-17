@@ -5,8 +5,6 @@ import 'package:movie_flutter/movie.dart';
 import 'package:movie_flutter/movies_cubit.dart';
 
 class MoviesRepo extends ChangeNotifier {
-  MoviesRepo();
-
   final _dio = Dio();
 
   List<Movie> _movies = [];
@@ -22,8 +20,10 @@ class MoviesRepo extends ChangeNotifier {
       _movies.where((m) => _watchedMovies.contains(m.id)).toIList();
 
   Future<IList<Movie>> fetchMovies() async {
-    final res =
-        await _dio.get("https://yts.mx/api/v2/list_movies.json?limit=50");
+    final res = await _dio
+        .get("https://yts.mx/api/v2/list_movies.json", queryParameters: {
+      "limit": 50,
+    });
 
     final movies = (res.data["data"]["movies"] as Iterable<dynamic>)
         .map((i) => Movie(
@@ -37,9 +37,10 @@ class MoviesRepo extends ChangeNotifier {
             ))
         .toList();
 
+    movies.shuffle();
     _movies = movies;
 
-    return movies.lock;
+    return _movies.lock;
   }
 
   Movie? getMovieById(int movieId) {

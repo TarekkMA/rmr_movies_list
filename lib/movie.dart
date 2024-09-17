@@ -52,4 +52,14 @@ class Movie {
       o.year == year &&
       o.rating == rating &&
       o.runtime == runtime;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      title.hashCode ^
+      imageUrl.hashCode ^
+      backgroundImageUrl.hashCode ^
+      year.hashCode ^
+      rating.hashCode ^
+      runtime.hashCode;
 }

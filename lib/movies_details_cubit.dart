@@ -1,8 +1,10 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:movie_flutter/movie.dart';
 import 'package:movie_flutter/movies_cubit.dart';
 import 'package:movie_flutter/movies_repo.dart';
 
+@immutable
 sealed class MoviesDetailsState {}
 
 class MoviesDetailsLoading extends MoviesDetailsState {}
