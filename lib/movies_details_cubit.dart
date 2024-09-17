@@ -18,27 +18,45 @@ sealed class MoviesDetailsState with _$MoviesDetailsState {
   ) = MoviesDetailsLoaded;
 }
 
+@freezed
+sealed class MoviesDetailsEvent with _$MoviesDetailsEvent {
+  const factory MoviesDetailsEvent.fetchMovie(int movieId) = _FetchMovie;
+  const factory MoviesDetailsEvent.toggleFavorite(int movieId) =
+      _ToggleFavorite;
+  const factory MoviesDetailsEvent.toggleWatched(int movieId) = _ToggleWatched;
+  const factory MoviesDetailsEvent.repoChanged() = _RepoChanged;
+}
 
-class MoviesDetailsCubit extends Cubit<MoviesDetailsState> {
-  MoviesDetailsCubit(int movieId, this._repo) : super(const MoviesDetailsState.loading()) {
-    fetchMovieDetails(movieId);
-    _repo.addListener(_repoStateChanged);
+class MoviesDetailsBloc extends Bloc<MoviesDetailsEvent, MoviesDetailsState> {
+  MoviesDetailsBloc(int movieId, this._repo)
+      : super(const MoviesDetailsState.loading()) {
+    on<_FetchMovie>((event, emit) => _fetchMovieDetails(emit, event.movieId));
+    on<_ToggleFavorite>((event, emit) => _toggleFavorite(emit, event.movieId));
+    on<_ToggleWatched>((event, emit) => _toggleWatched(emit, event.movieId));
+
+    on<_RepoChanged>((event, emit) {
+      if (state is MoviesDetailsLoaded) {
+        emit(
+          (state as MoviesDetailsLoaded).copyWith(
+            isFavorite:
+                _repo.isFavorite((state as MoviesDetailsLoaded).movie.id),
+            isWatched: _repo.isWatched((state as MoviesDetailsLoaded).movie.id),
+          ),
+        );
+      }
+    });
+
+    add(MoviesDetailsEvent.fetchMovie(movieId));
+    _repo.addListener(_repoChangeListener);
   }
 
   final MoviesRepo _repo;
 
-  void _repoStateChanged() {
-    if (state is MoviesDetailsLoaded) {
-      emit(
-        (state as MoviesDetailsLoaded).copyWith(
-          isFavorite: _repo.isFavorite((state as MoviesDetailsLoaded).movie.id),
-          isWatched: _repo.isWatched((state as MoviesDetailsLoaded).movie.id),
-        ),
-      );
-    }
+  void _repoChangeListener() {
+    add(const MoviesDetailsEvent.repoChanged());
   }
 
-  void fetchMovieDetails(int movieId) {
+  void _fetchMovieDetails(Emitter<MoviesDetailsState> emit, int movieId) {
     final movie = _repo.getMovieById(movieId);
     if (movie == null) {
       emit(const MoviesDetailsState.error("Movie not found"));
@@ -51,14 +69,14 @@ class MoviesDetailsCubit extends Cubit<MoviesDetailsState> {
     emit(MoviesDetailsState.loaded(movie, isFavorite, isWatched));
   }
 
-  void toggleFavorite(int movieId) {
+  void _toggleFavorite(Emitter<MoviesDetailsState> emit, int movieId) {
     if (state is! MoviesDetailsLoaded) return;
     _repo.toggleFavorite(movieId);
     emit((state as MoviesDetailsLoaded)
         .copyWith(isFavorite: _repo.isFavorite(movieId)));
   }
 
-  void toggleWatched(int movieId) {
+  void _toggleWatched(Emitter<MoviesDetailsState> emit, int movieId) {
     if (state is! MoviesDetailsLoaded) return;
     _repo.toggleWatched(movieId);
     emit((state as MoviesDetailsLoaded)
@@ -67,7 +85,7 @@ class MoviesDetailsCubit extends Cubit<MoviesDetailsState> {
 
   @override
   Future<void> close() {
-    _repo.removeListener(_repoStateChanged);
+    _repo.removeListener(_repoChangeListener);
     return super.close();
   }
 }

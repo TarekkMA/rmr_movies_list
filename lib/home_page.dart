@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<MoviesCubit>().state;
+    final state = context.watch<MoviesBloc>().state;
 
     final Widget body;
     if (state.isLoading) {
@@ -61,13 +61,17 @@ class _HomePageState extends State<HomePage> {
                   prefixIcon: Icon(Icons.search),
                 ),
                 onChanged: (value) {
-                  context.read<MoviesCubit>().changeQuery(value);
+                  context
+                      .read<MoviesBloc>()
+                      .add(MoviesEvent.changeQuery(value));
                 },
               ),
               Expanded(
                 child: RefreshIndicator(
                   onRefresh: () async {
-                    context.read<MoviesCubit>().fetchMovies();
+                    context
+                        .read<MoviesBloc>()
+                        .add(const MoviesEvent.fetchMovies());
                   },
                   child: MoviesListWidget(
                     movies:
@@ -153,11 +157,11 @@ class MovieWidget extends StatelessWidget {
             const SizedBox(width: 10),
             Expanded(child: Text(movie.title)),
             BlocProvider(
-              create: (context) => MoviesDetailsCubit(
+              create: (context) => MoviesDetailsBloc(
                 movie.id,
                 context.read<MoviesRepo>(),
               ),
-              child: BlocBuilder<MoviesDetailsCubit, MoviesDetailsState>(
+              child: BlocBuilder<MoviesDetailsBloc, MoviesDetailsState>(
                 builder: (context, state) {
                   switch (state) {
                     case MoviesDetailsLoading():
@@ -169,9 +173,9 @@ class MovieWidget extends StatelessWidget {
                         children: [
                           IconButton(
                             onPressed: () {
-                              context
-                                  .read<MoviesDetailsCubit>()
-                                  .toggleWatched(movie.id);
+                              context.read<MoviesDetailsBloc>().add(
+                                    MoviesDetailsEvent.toggleWatched(movie.id),
+                                  );
                             },
                             icon: Icon(
                               state.isWatched
@@ -182,9 +186,9 @@ class MovieWidget extends StatelessWidget {
                           ),
                           IconButton(
                             onPressed: () {
-                              context
-                                  .read<MoviesDetailsCubit>()
-                                  .toggleFavorite(movie.id);
+                              context.read<MoviesDetailsBloc>().add(
+                                    MoviesDetailsEvent.toggleFavorite(movie.id),
+                                  );
                             },
                             icon: Icon(
                               state.isFavorite

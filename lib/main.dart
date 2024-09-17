@@ -34,9 +34,9 @@ class MainApp extends StatelessWidget {
       create: (context) => MoviesRepo(),
       child: MaterialApp(
         home: BlocProvider(
-          create: (context) => MoviesCubit(
+          create: (context) => MoviesBloc(
             context.read<MoviesRepo>(),
-          )..fetchMovies(),
+          )..add(const MoviesEvent.fetchMovies()),
           child: const HomePage(),
         ),
       ),

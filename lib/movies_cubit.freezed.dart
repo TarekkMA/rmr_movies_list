@@ -164,7 +164,7 @@ class __$$MoviesStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MoviesStateImpl extends _MoviesState {
+class _$MoviesStateImpl extends _MoviesState with DiagnosticableTreeMixin {
   const _$MoviesStateImpl(
       {required this.query,
       required this.error,
@@ -188,8 +188,21 @@ class _$MoviesStateImpl extends _MoviesState {
   final IList<Movie> watchedMovies;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'MoviesState(query: $query, error: $error, isLoading: $isLoading, movies: $movies, favoriteMovies: $favoriteMovies, watchedMovies: $watchedMovies)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'MoviesState'))
+      ..add(DiagnosticsProperty('query', query))
+      ..add(DiagnosticsProperty('error', error))
+      ..add(DiagnosticsProperty('isLoading', isLoading))
+      ..add(DiagnosticsProperty('movies', movies))
+      ..add(DiagnosticsProperty('favoriteMovies', favoriteMovies))
+      ..add(DiagnosticsProperty('watchedMovies', watchedMovies));
   }
 
   @override
@@ -256,4 +269,462 @@ abstract class _MoviesState extends MoviesState {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MoviesStateImplCopyWith<_$MoviesStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$MoviesEvent {
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() fetchMovies,
+    required TResult Function(String newQuery) changeQuery,
+    required TResult Function() repoChanged,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? fetchMovies,
+    TResult? Function(String newQuery)? changeQuery,
+    TResult? Function()? repoChanged,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? fetchMovies,
+    TResult Function(String newQuery)? changeQuery,
+    TResult Function()? repoChanged,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_FetchMovies value) fetchMovies,
+    required TResult Function(_ChangeQuery value) changeQuery,
+    required TResult Function(_RepoChanged value) repoChanged,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_FetchMovies value)? fetchMovies,
+    TResult? Function(_ChangeQuery value)? changeQuery,
+    TResult? Function(_RepoChanged value)? repoChanged,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_FetchMovies value)? fetchMovies,
+    TResult Function(_ChangeQuery value)? changeQuery,
+    TResult Function(_RepoChanged value)? repoChanged,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $MoviesEventCopyWith<$Res> {
+  factory $MoviesEventCopyWith(
+          MoviesEvent value, $Res Function(MoviesEvent) then) =
+      _$MoviesEventCopyWithImpl<$Res, MoviesEvent>;
+}
+
+/// @nodoc
+class _$MoviesEventCopyWithImpl<$Res, $Val extends MoviesEvent>
+    implements $MoviesEventCopyWith<$Res> {
+  _$MoviesEventCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of MoviesEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+abstract class _$$FetchMoviesImplCopyWith<$Res> {
+  factory _$$FetchMoviesImplCopyWith(
+          _$FetchMoviesImpl value, $Res Function(_$FetchMoviesImpl) then) =
+      __$$FetchMoviesImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$FetchMoviesImplCopyWithImpl<$Res>
+    extends _$MoviesEventCopyWithImpl<$Res, _$FetchMoviesImpl>
+    implements _$$FetchMoviesImplCopyWith<$Res> {
+  __$$FetchMoviesImplCopyWithImpl(
+      _$FetchMoviesImpl _value, $Res Function(_$FetchMoviesImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of MoviesEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$FetchMoviesImpl with DiagnosticableTreeMixin implements _FetchMovies {
+  const _$FetchMoviesImpl();
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'MoviesEvent.fetchMovies()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('type', 'MoviesEvent.fetchMovies'));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$FetchMoviesImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() fetchMovies,
+    required TResult Function(String newQuery) changeQuery,
+    required TResult Function() repoChanged,
+  }) {
+    return fetchMovies();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? fetchMovies,
+    TResult? Function(String newQuery)? changeQuery,
+    TResult? Function()? repoChanged,
+  }) {
+    return fetchMovies?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? fetchMovies,
+    TResult Function(String newQuery)? changeQuery,
+    TResult Function()? repoChanged,
+    required TResult orElse(),
+  }) {
+    if (fetchMovies != null) {
+      return fetchMovies();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_FetchMovies value) fetchMovies,
+    required TResult Function(_ChangeQuery value) changeQuery,
+    required TResult Function(_RepoChanged value) repoChanged,
+  }) {
+    return fetchMovies(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_FetchMovies value)? fetchMovies,
+    TResult? Function(_ChangeQuery value)? changeQuery,
+    TResult? Function(_RepoChanged value)? repoChanged,
+  }) {
+    return fetchMovies?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_FetchMovies value)? fetchMovies,
+    TResult Function(_ChangeQuery value)? changeQuery,
+    TResult Function(_RepoChanged value)? repoChanged,
+    required TResult orElse(),
+  }) {
+    if (fetchMovies != null) {
+      return fetchMovies(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _FetchMovies implements MoviesEvent {
+  const factory _FetchMovies() = _$FetchMoviesImpl;
+}
+
+/// @nodoc
+abstract class _$$ChangeQueryImplCopyWith<$Res> {
+  factory _$$ChangeQueryImplCopyWith(
+          _$ChangeQueryImpl value, $Res Function(_$ChangeQueryImpl) then) =
+      __$$ChangeQueryImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String newQuery});
+}
+
+/// @nodoc
+class __$$ChangeQueryImplCopyWithImpl<$Res>
+    extends _$MoviesEventCopyWithImpl<$Res, _$ChangeQueryImpl>
+    implements _$$ChangeQueryImplCopyWith<$Res> {
+  __$$ChangeQueryImplCopyWithImpl(
+      _$ChangeQueryImpl _value, $Res Function(_$ChangeQueryImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of MoviesEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? newQuery = null,
+  }) {
+    return _then(_$ChangeQueryImpl(
+      null == newQuery
+          ? _value.newQuery
+          : newQuery // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ChangeQueryImpl with DiagnosticableTreeMixin implements _ChangeQuery {
+  const _$ChangeQueryImpl(this.newQuery);
+
+  @override
+  final String newQuery;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'MoviesEvent.changeQuery(newQuery: $newQuery)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'MoviesEvent.changeQuery'))
+      ..add(DiagnosticsProperty('newQuery', newQuery));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ChangeQueryImpl &&
+            (identical(other.newQuery, newQuery) ||
+                other.newQuery == newQuery));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, newQuery);
+
+  /// Create a copy of MoviesEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ChangeQueryImplCopyWith<_$ChangeQueryImpl> get copyWith =>
+      __$$ChangeQueryImplCopyWithImpl<_$ChangeQueryImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() fetchMovies,
+    required TResult Function(String newQuery) changeQuery,
+    required TResult Function() repoChanged,
+  }) {
+    return changeQuery(newQuery);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? fetchMovies,
+    TResult? Function(String newQuery)? changeQuery,
+    TResult? Function()? repoChanged,
+  }) {
+    return changeQuery?.call(newQuery);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? fetchMovies,
+    TResult Function(String newQuery)? changeQuery,
+    TResult Function()? repoChanged,
+    required TResult orElse(),
+  }) {
+    if (changeQuery != null) {
+      return changeQuery(newQuery);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_FetchMovies value) fetchMovies,
+    required TResult Function(_ChangeQuery value) changeQuery,
+    required TResult Function(_RepoChanged value) repoChanged,
+  }) {
+    return changeQuery(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_FetchMovies value)? fetchMovies,
+    TResult? Function(_ChangeQuery value)? changeQuery,
+    TResult? Function(_RepoChanged value)? repoChanged,
+  }) {
+    return changeQuery?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_FetchMovies value)? fetchMovies,
+    TResult Function(_ChangeQuery value)? changeQuery,
+    TResult Function(_RepoChanged value)? repoChanged,
+    required TResult orElse(),
+  }) {
+    if (changeQuery != null) {
+      return changeQuery(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ChangeQuery implements MoviesEvent {
+  const factory _ChangeQuery(final String newQuery) = _$ChangeQueryImpl;
+
+  String get newQuery;
+
+  /// Create a copy of MoviesEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ChangeQueryImplCopyWith<_$ChangeQueryImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$RepoChangedImplCopyWith<$Res> {
+  factory _$$RepoChangedImplCopyWith(
+          _$RepoChangedImpl value, $Res Function(_$RepoChangedImpl) then) =
+      __$$RepoChangedImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$RepoChangedImplCopyWithImpl<$Res>
+    extends _$MoviesEventCopyWithImpl<$Res, _$RepoChangedImpl>
+    implements _$$RepoChangedImplCopyWith<$Res> {
+  __$$RepoChangedImplCopyWithImpl(
+      _$RepoChangedImpl _value, $Res Function(_$RepoChangedImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of MoviesEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$RepoChangedImpl with DiagnosticableTreeMixin implements _RepoChanged {
+  const _$RepoChangedImpl();
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'MoviesEvent.repoChanged()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('type', 'MoviesEvent.repoChanged'));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$RepoChangedImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() fetchMovies,
+    required TResult Function(String newQuery) changeQuery,
+    required TResult Function() repoChanged,
+  }) {
+    return repoChanged();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? fetchMovies,
+    TResult? Function(String newQuery)? changeQuery,
+    TResult? Function()? repoChanged,
+  }) {
+    return repoChanged?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? fetchMovies,
+    TResult Function(String newQuery)? changeQuery,
+    TResult Function()? repoChanged,
+    required TResult orElse(),
+  }) {
+    if (repoChanged != null) {
+      return repoChanged();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_FetchMovies value) fetchMovies,
+    required TResult Function(_ChangeQuery value) changeQuery,
+    required TResult Function(_RepoChanged value) repoChanged,
+  }) {
+    return repoChanged(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_FetchMovies value)? fetchMovies,
+    TResult? Function(_ChangeQuery value)? changeQuery,
+    TResult? Function(_RepoChanged value)? repoChanged,
+  }) {
+    return repoChanged?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_FetchMovies value)? fetchMovies,
+    TResult Function(_ChangeQuery value)? changeQuery,
+    TResult Function(_RepoChanged value)? repoChanged,
+    required TResult orElse(),
+  }) {
+    if (repoChanged != null) {
+      return repoChanged(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _RepoChanged implements MoviesEvent {
+  const factory _RepoChanged() = _$RepoChangedImpl;
 }

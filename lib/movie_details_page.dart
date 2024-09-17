@@ -14,11 +14,11 @@ class MovieDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => MoviesDetailsCubit(
+      create: (context) => MoviesDetailsBloc(
         movieId,
         context.read<MoviesRepo>(),
       ),
-      child: BlocBuilder<MoviesDetailsCubit, MoviesDetailsState>(
+      child: BlocBuilder<MoviesDetailsBloc, MoviesDetailsState>(
         builder: (context, state) {
           final Widget body;
           switch (state) {
@@ -121,7 +121,9 @@ class _MovieDetailsPageContent extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () {
-                    context.read<MoviesDetailsCubit>().toggleWatched(movie.id);
+                    context.read<MoviesDetailsBloc>().add(
+                          MoviesDetailsEvent.toggleWatched(movie.id),
+                        );
                   },
                   icon: Icon(
                     moviesDetailsState.isWatched
@@ -132,7 +134,9 @@ class _MovieDetailsPageContent extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: () {
-                    context.read<MoviesDetailsCubit>().toggleFavorite(movie.id);
+                    context.read<MoviesDetailsBloc>().add(
+                          MoviesDetailsEvent.toggleFavorite(movie.id),
+                        );
                   },
                   icon: Icon(
                     moviesDetailsState.isFavorite

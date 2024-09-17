@@ -527,3 +527,652 @@ abstract class MoviesDetailsLoaded implements MoviesDetailsState {
   _$$MoviesDetailsLoadedImplCopyWith<_$MoviesDetailsLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
+
+/// @nodoc
+mixin _$MoviesDetailsEvent {
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(int movieId) fetchMovie,
+    required TResult Function(int movieId) toggleFavorite,
+    required TResult Function(int movieId) toggleWatched,
+    required TResult Function() repoChanged,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(int movieId)? fetchMovie,
+    TResult? Function(int movieId)? toggleFavorite,
+    TResult? Function(int movieId)? toggleWatched,
+    TResult? Function()? repoChanged,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(int movieId)? fetchMovie,
+    TResult Function(int movieId)? toggleFavorite,
+    TResult Function(int movieId)? toggleWatched,
+    TResult Function()? repoChanged,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_FetchMovie value) fetchMovie,
+    required TResult Function(_ToggleFavorite value) toggleFavorite,
+    required TResult Function(_ToggleWatched value) toggleWatched,
+    required TResult Function(_RepoChanged value) repoChanged,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_FetchMovie value)? fetchMovie,
+    TResult? Function(_ToggleFavorite value)? toggleFavorite,
+    TResult? Function(_ToggleWatched value)? toggleWatched,
+    TResult? Function(_RepoChanged value)? repoChanged,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_FetchMovie value)? fetchMovie,
+    TResult Function(_ToggleFavorite value)? toggleFavorite,
+    TResult Function(_ToggleWatched value)? toggleWatched,
+    TResult Function(_RepoChanged value)? repoChanged,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $MoviesDetailsEventCopyWith<$Res> {
+  factory $MoviesDetailsEventCopyWith(
+          MoviesDetailsEvent value, $Res Function(MoviesDetailsEvent) then) =
+      _$MoviesDetailsEventCopyWithImpl<$Res, MoviesDetailsEvent>;
+}
+
+/// @nodoc
+class _$MoviesDetailsEventCopyWithImpl<$Res, $Val extends MoviesDetailsEvent>
+    implements $MoviesDetailsEventCopyWith<$Res> {
+  _$MoviesDetailsEventCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of MoviesDetailsEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+abstract class _$$FetchMovieImplCopyWith<$Res> {
+  factory _$$FetchMovieImplCopyWith(
+          _$FetchMovieImpl value, $Res Function(_$FetchMovieImpl) then) =
+      __$$FetchMovieImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({int movieId});
+}
+
+/// @nodoc
+class __$$FetchMovieImplCopyWithImpl<$Res>
+    extends _$MoviesDetailsEventCopyWithImpl<$Res, _$FetchMovieImpl>
+    implements _$$FetchMovieImplCopyWith<$Res> {
+  __$$FetchMovieImplCopyWithImpl(
+      _$FetchMovieImpl _value, $Res Function(_$FetchMovieImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of MoviesDetailsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? movieId = null,
+  }) {
+    return _then(_$FetchMovieImpl(
+      null == movieId
+          ? _value.movieId
+          : movieId // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$FetchMovieImpl implements _FetchMovie {
+  const _$FetchMovieImpl(this.movieId);
+
+  @override
+  final int movieId;
+
+  @override
+  String toString() {
+    return 'MoviesDetailsEvent.fetchMovie(movieId: $movieId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$FetchMovieImpl &&
+            (identical(other.movieId, movieId) || other.movieId == movieId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, movieId);
+
+  /// Create a copy of MoviesDetailsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$FetchMovieImplCopyWith<_$FetchMovieImpl> get copyWith =>
+      __$$FetchMovieImplCopyWithImpl<_$FetchMovieImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(int movieId) fetchMovie,
+    required TResult Function(int movieId) toggleFavorite,
+    required TResult Function(int movieId) toggleWatched,
+    required TResult Function() repoChanged,
+  }) {
+    return fetchMovie(movieId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(int movieId)? fetchMovie,
+    TResult? Function(int movieId)? toggleFavorite,
+    TResult? Function(int movieId)? toggleWatched,
+    TResult? Function()? repoChanged,
+  }) {
+    return fetchMovie?.call(movieId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(int movieId)? fetchMovie,
+    TResult Function(int movieId)? toggleFavorite,
+    TResult Function(int movieId)? toggleWatched,
+    TResult Function()? repoChanged,
+    required TResult orElse(),
+  }) {
+    if (fetchMovie != null) {
+      return fetchMovie(movieId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_FetchMovie value) fetchMovie,
+    required TResult Function(_ToggleFavorite value) toggleFavorite,
+    required TResult Function(_ToggleWatched value) toggleWatched,
+    required TResult Function(_RepoChanged value) repoChanged,
+  }) {
+    return fetchMovie(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_FetchMovie value)? fetchMovie,
+    TResult? Function(_ToggleFavorite value)? toggleFavorite,
+    TResult? Function(_ToggleWatched value)? toggleWatched,
+    TResult? Function(_RepoChanged value)? repoChanged,
+  }) {
+    return fetchMovie?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_FetchMovie value)? fetchMovie,
+    TResult Function(_ToggleFavorite value)? toggleFavorite,
+    TResult Function(_ToggleWatched value)? toggleWatched,
+    TResult Function(_RepoChanged value)? repoChanged,
+    required TResult orElse(),
+  }) {
+    if (fetchMovie != null) {
+      return fetchMovie(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _FetchMovie implements MoviesDetailsEvent {
+  const factory _FetchMovie(final int movieId) = _$FetchMovieImpl;
+
+  int get movieId;
+
+  /// Create a copy of MoviesDetailsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$FetchMovieImplCopyWith<_$FetchMovieImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ToggleFavoriteImplCopyWith<$Res> {
+  factory _$$ToggleFavoriteImplCopyWith(_$ToggleFavoriteImpl value,
+          $Res Function(_$ToggleFavoriteImpl) then) =
+      __$$ToggleFavoriteImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({int movieId});
+}
+
+/// @nodoc
+class __$$ToggleFavoriteImplCopyWithImpl<$Res>
+    extends _$MoviesDetailsEventCopyWithImpl<$Res, _$ToggleFavoriteImpl>
+    implements _$$ToggleFavoriteImplCopyWith<$Res> {
+  __$$ToggleFavoriteImplCopyWithImpl(
+      _$ToggleFavoriteImpl _value, $Res Function(_$ToggleFavoriteImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of MoviesDetailsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? movieId = null,
+  }) {
+    return _then(_$ToggleFavoriteImpl(
+      null == movieId
+          ? _value.movieId
+          : movieId // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ToggleFavoriteImpl implements _ToggleFavorite {
+  const _$ToggleFavoriteImpl(this.movieId);
+
+  @override
+  final int movieId;
+
+  @override
+  String toString() {
+    return 'MoviesDetailsEvent.toggleFavorite(movieId: $movieId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ToggleFavoriteImpl &&
+            (identical(other.movieId, movieId) || other.movieId == movieId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, movieId);
+
+  /// Create a copy of MoviesDetailsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ToggleFavoriteImplCopyWith<_$ToggleFavoriteImpl> get copyWith =>
+      __$$ToggleFavoriteImplCopyWithImpl<_$ToggleFavoriteImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(int movieId) fetchMovie,
+    required TResult Function(int movieId) toggleFavorite,
+    required TResult Function(int movieId) toggleWatched,
+    required TResult Function() repoChanged,
+  }) {
+    return toggleFavorite(movieId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(int movieId)? fetchMovie,
+    TResult? Function(int movieId)? toggleFavorite,
+    TResult? Function(int movieId)? toggleWatched,
+    TResult? Function()? repoChanged,
+  }) {
+    return toggleFavorite?.call(movieId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(int movieId)? fetchMovie,
+    TResult Function(int movieId)? toggleFavorite,
+    TResult Function(int movieId)? toggleWatched,
+    TResult Function()? repoChanged,
+    required TResult orElse(),
+  }) {
+    if (toggleFavorite != null) {
+      return toggleFavorite(movieId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_FetchMovie value) fetchMovie,
+    required TResult Function(_ToggleFavorite value) toggleFavorite,
+    required TResult Function(_ToggleWatched value) toggleWatched,
+    required TResult Function(_RepoChanged value) repoChanged,
+  }) {
+    return toggleFavorite(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_FetchMovie value)? fetchMovie,
+    TResult? Function(_ToggleFavorite value)? toggleFavorite,
+    TResult? Function(_ToggleWatched value)? toggleWatched,
+    TResult? Function(_RepoChanged value)? repoChanged,
+  }) {
+    return toggleFavorite?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_FetchMovie value)? fetchMovie,
+    TResult Function(_ToggleFavorite value)? toggleFavorite,
+    TResult Function(_ToggleWatched value)? toggleWatched,
+    TResult Function(_RepoChanged value)? repoChanged,
+    required TResult orElse(),
+  }) {
+    if (toggleFavorite != null) {
+      return toggleFavorite(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ToggleFavorite implements MoviesDetailsEvent {
+  const factory _ToggleFavorite(final int movieId) = _$ToggleFavoriteImpl;
+
+  int get movieId;
+
+  /// Create a copy of MoviesDetailsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ToggleFavoriteImplCopyWith<_$ToggleFavoriteImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ToggleWatchedImplCopyWith<$Res> {
+  factory _$$ToggleWatchedImplCopyWith(
+          _$ToggleWatchedImpl value, $Res Function(_$ToggleWatchedImpl) then) =
+      __$$ToggleWatchedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({int movieId});
+}
+
+/// @nodoc
+class __$$ToggleWatchedImplCopyWithImpl<$Res>
+    extends _$MoviesDetailsEventCopyWithImpl<$Res, _$ToggleWatchedImpl>
+    implements _$$ToggleWatchedImplCopyWith<$Res> {
+  __$$ToggleWatchedImplCopyWithImpl(
+      _$ToggleWatchedImpl _value, $Res Function(_$ToggleWatchedImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of MoviesDetailsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? movieId = null,
+  }) {
+    return _then(_$ToggleWatchedImpl(
+      null == movieId
+          ? _value.movieId
+          : movieId // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ToggleWatchedImpl implements _ToggleWatched {
+  const _$ToggleWatchedImpl(this.movieId);
+
+  @override
+  final int movieId;
+
+  @override
+  String toString() {
+    return 'MoviesDetailsEvent.toggleWatched(movieId: $movieId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ToggleWatchedImpl &&
+            (identical(other.movieId, movieId) || other.movieId == movieId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, movieId);
+
+  /// Create a copy of MoviesDetailsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ToggleWatchedImplCopyWith<_$ToggleWatchedImpl> get copyWith =>
+      __$$ToggleWatchedImplCopyWithImpl<_$ToggleWatchedImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(int movieId) fetchMovie,
+    required TResult Function(int movieId) toggleFavorite,
+    required TResult Function(int movieId) toggleWatched,
+    required TResult Function() repoChanged,
+  }) {
+    return toggleWatched(movieId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(int movieId)? fetchMovie,
+    TResult? Function(int movieId)? toggleFavorite,
+    TResult? Function(int movieId)? toggleWatched,
+    TResult? Function()? repoChanged,
+  }) {
+    return toggleWatched?.call(movieId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(int movieId)? fetchMovie,
+    TResult Function(int movieId)? toggleFavorite,
+    TResult Function(int movieId)? toggleWatched,
+    TResult Function()? repoChanged,
+    required TResult orElse(),
+  }) {
+    if (toggleWatched != null) {
+      return toggleWatched(movieId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_FetchMovie value) fetchMovie,
+    required TResult Function(_ToggleFavorite value) toggleFavorite,
+    required TResult Function(_ToggleWatched value) toggleWatched,
+    required TResult Function(_RepoChanged value) repoChanged,
+  }) {
+    return toggleWatched(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_FetchMovie value)? fetchMovie,
+    TResult? Function(_ToggleFavorite value)? toggleFavorite,
+    TResult? Function(_ToggleWatched value)? toggleWatched,
+    TResult? Function(_RepoChanged value)? repoChanged,
+  }) {
+    return toggleWatched?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_FetchMovie value)? fetchMovie,
+    TResult Function(_ToggleFavorite value)? toggleFavorite,
+    TResult Function(_ToggleWatched value)? toggleWatched,
+    TResult Function(_RepoChanged value)? repoChanged,
+    required TResult orElse(),
+  }) {
+    if (toggleWatched != null) {
+      return toggleWatched(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ToggleWatched implements MoviesDetailsEvent {
+  const factory _ToggleWatched(final int movieId) = _$ToggleWatchedImpl;
+
+  int get movieId;
+
+  /// Create a copy of MoviesDetailsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ToggleWatchedImplCopyWith<_$ToggleWatchedImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$RepoChangedImplCopyWith<$Res> {
+  factory _$$RepoChangedImplCopyWith(
+          _$RepoChangedImpl value, $Res Function(_$RepoChangedImpl) then) =
+      __$$RepoChangedImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$RepoChangedImplCopyWithImpl<$Res>
+    extends _$MoviesDetailsEventCopyWithImpl<$Res, _$RepoChangedImpl>
+    implements _$$RepoChangedImplCopyWith<$Res> {
+  __$$RepoChangedImplCopyWithImpl(
+      _$RepoChangedImpl _value, $Res Function(_$RepoChangedImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of MoviesDetailsEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$RepoChangedImpl implements _RepoChanged {
+  const _$RepoChangedImpl();
+
+  @override
+  String toString() {
+    return 'MoviesDetailsEvent.repoChanged()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$RepoChangedImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(int movieId) fetchMovie,
+    required TResult Function(int movieId) toggleFavorite,
+    required TResult Function(int movieId) toggleWatched,
+    required TResult Function() repoChanged,
+  }) {
+    return repoChanged();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(int movieId)? fetchMovie,
+    TResult? Function(int movieId)? toggleFavorite,
+    TResult? Function(int movieId)? toggleWatched,
+    TResult? Function()? repoChanged,
+  }) {
+    return repoChanged?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(int movieId)? fetchMovie,
+    TResult Function(int movieId)? toggleFavorite,
+    TResult Function(int movieId)? toggleWatched,
+    TResult Function()? repoChanged,
+    required TResult orElse(),
+  }) {
+    if (repoChanged != null) {
+      return repoChanged();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_FetchMovie value) fetchMovie,
+    required TResult Function(_ToggleFavorite value) toggleFavorite,
+    required TResult Function(_ToggleWatched value) toggleWatched,
+    required TResult Function(_RepoChanged value) repoChanged,
+  }) {
+    return repoChanged(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_FetchMovie value)? fetchMovie,
+    TResult? Function(_ToggleFavorite value)? toggleFavorite,
+    TResult? Function(_ToggleWatched value)? toggleWatched,
+    TResult? Function(_RepoChanged value)? repoChanged,
+  }) {
+    return repoChanged?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_FetchMovie value)? fetchMovie,
+    TResult Function(_ToggleFavorite value)? toggleFavorite,
+    TResult Function(_ToggleWatched value)? toggleWatched,
+    TResult Function(_RepoChanged value)? repoChanged,
+    required TResult orElse(),
+  }) {
+    if (repoChanged != null) {
+      return repoChanged(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _RepoChanged implements MoviesDetailsEvent {
+  const factory _RepoChanged() = _$RepoChangedImpl;
+}

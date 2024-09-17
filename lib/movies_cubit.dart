@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:movie_flutter/movie.dart';
 import 'package:movie_flutter/movies_repo.dart';
@@ -38,21 +38,36 @@ class MoviesState with _$MoviesState {
       .toIList();
 }
 
-class MoviesCubit extends Cubit<MoviesState> {
+@freezed
+class MoviesEvent with _$MoviesEvent {
+  const factory MoviesEvent.fetchMovies() = _FetchMovies;
+  const factory MoviesEvent.changeQuery(String newQuery) = _ChangeQuery;
+  const factory MoviesEvent.repoChanged() = _RepoChanged;
+}
+
+class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   final MoviesRepo _repo;
 
-  MoviesCubit(this._repo) : super(MoviesState.initial()) {
-    _repo.addListener(_repoStateChanged);
+  MoviesBloc(this._repo) : super(MoviesState.initial()) {
+    on<_FetchMovies>((event, emit) => _fetchMovies(emit));
+    on<_ChangeQuery>((event, emit) {
+      emit(state.copyWith(query: event.newQuery.trim()));
+    });
+    on<_RepoChanged>((event, emit) {
+      emit(state.copyWith(
+        favoriteMovies: _repo.favoriteMovies,
+        watchedMovies: _repo.watchedMovies,
+      ));
+    });
+
+    _repo.addListener(_repoChangeListener);
   }
 
-  void _repoStateChanged() {
-    emit(state.copyWith(
-      favoriteMovies: _repo.favoriteMovies,
-      watchedMovies: _repo.watchedMovies,
-    ));
+  void _repoChangeListener() {
+    add(const MoviesEvent.repoChanged());
   }
 
-  Future<void> fetchMovies() async {
+  Future<void> _fetchMovies(Emitter<MoviesState> emit) async {
     emit(state.copyWith(isLoading: true));
 
     try {
@@ -71,13 +86,9 @@ class MoviesCubit extends Cubit<MoviesState> {
     }
   }
 
-  void changeQuery(String newQuery) {
-    emit(state.copyWith(query: newQuery.trim()));
-  }
-
   @override
   Future<void> close() {
-    _repo.removeListener(_repoStateChanged);
+    _repo.removeListener(_repoChangeListener);
     return super.close();
   }
 }
