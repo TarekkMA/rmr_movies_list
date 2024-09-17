@@ -25,17 +25,7 @@ class MoviesRepo extends ChangeNotifier {
       "limit": 50,
     });
 
-    final movies = (res.data["data"]["movies"] as Iterable<dynamic>)
-        .map((i) => Movie(
-              id: i["id"],
-              title: i["title"],
-              imageUrl: i["large_cover_image"],
-              backgroundImageUrl: i["background_image"],
-              year: i["year"],
-              rating: i["rating"].toDouble(),
-              runtime: i["runtime"],
-            ))
-        .toList();
+    final movies = Movie.fromJsonList(res.data["data"]["movies"]);
 
     movies.shuffle();
     _movies = movies;

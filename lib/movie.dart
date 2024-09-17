@@ -1,10 +1,18 @@
 import 'package:flutter/foundation.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'movie.g.dart';
 
 @immutable
+@JsonSerializable(
+  createToJson: false,
+)
 class Movie {
   final int id;
   final String title;
+  @JsonKey(name: "large_cover_image")
   final String imageUrl;
+  @JsonKey(name: "background_image")
   final String backgroundImageUrl;
   final int year;
   final double rating;
@@ -19,6 +27,11 @@ class Movie {
     required this.rating,
     required this.runtime,
   });
+
+  factory Movie.fromJson(Map<String, dynamic> json) => _$MovieFromJson(json);
+
+  static List<Movie> fromJsonList(Iterable<dynamic> jsonList) =>
+      jsonList.map((json) => Movie.fromJson(json)).toList();
 
   Movie copyWith({
     int? id,
